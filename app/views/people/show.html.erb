@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>First name:</strong>
+  <%= @person.first_name %>
+</p>
+
+<p>
+  <strong>Last name:</strong>
+  <%= @person.last_name %>
+</p>
+<ul class="phone_numbers">
+  <strong>...Phone numbers...</strong>
+  <% @person.phone_numbers.each do |num| %>
+    <li><%= num.number %> <%= link_to 'Edit', edit_phone_number_path(num) %> <%= link_to 'Delete', phone_number_path(num), :method => "delete" %></li>
+  <% end %>
+</ul>
+<ul class="email_addresses">
+  <strong>...Email addresses...</strong>
+  <% @person.email_addresses.each do |email| %>
+    <li><%= email.address %> <%= link_to 'Edit', edit_email_address_path(email)%> <%= link_to 'Delete', email_address_path(email), :method => "delete" %></li>
+  <% end %>
+</ul>
+<%= link_to 'Add number', new_phone_number_path(person_id: @person.id) %> |
+<%= link_to 'Add email', new_email_address_path(person_id: @person.id) %> |
+<%= link_to 'Edit', edit_person_path(@person) %> |
+<%= link_to 'Back', people_path %>
