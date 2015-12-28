@@ -17,10 +17,12 @@ RSpec.describe Person, type: :model do
     person.last_name = nil
     expect(person).not_to be_valid
   end
-  it "has many phone numbers" do
-    expect(person.phone_numbers).to eq([])
+  it "responds with its phone numbers" do
+    person.phone_numbers.build(number: "555-1234")
+    expect(person.phone_numbers.map(&:number)).to eq(['555-1234'])
   end
   it "has many email addresses" do
-    expect(person.email_addresses).to eq([])
+    person.email_addresses.build(address: "mail@example.com")
+    expect(person.email_addresses.map(&:address)).to eq(['mail@example.com'])
   end
 end

@@ -4,11 +4,11 @@ require 'rails_helper'
 RSpec.describe PhoneNumbersController, type: :controller do
 
   let(:valid_attributes) {
-    { number: "111222333444", person_id: 1 }
+    { number: "111222333444", contact_id: 1, contact_type: "Person" }
   }
 
   let(:invalid_attributes) {
-    { number: nil, person_id: nil }
+    { number: nil, person_id: nil, contact_type: nil }
   }
 
   let(:valid_session) { {} }
@@ -46,8 +46,10 @@ RSpec.describe PhoneNumbersController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
+
       let (:alice){ Person.create(first_name: "Alice", last_name: "Smith") }
-      let (:valid_attributes){ {number: "123-4567", person_id: alice.id} }
+      let (:valid_attributes){ {number: "123-4567", contact_id: alice.id, contact_type: "Person"} }
+
       it "creates a new PhoneNumber" do
         expect {
           post :create, {:phone_number => valid_attributes}, valid_session
@@ -82,9 +84,9 @@ RSpec.describe PhoneNumbersController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:bob){ Person.create(first_name: "Bob", last_name: "Jones") }
-      let(:valid_attributes){ { number: "555-5555", person_id: bob.id } }
+      let(:valid_attributes){ { number: "555-5555", contact_id: bob.id, contact_type: "Person" } }
       let(:new_attributes) {
-        { number: "555666777", person_id: bob.id }
+        { number: "555666777", contact_id: bob.id, contact_type: "Person" }
       }
 
       it "updates the requested phone_number" do
@@ -92,7 +94,7 @@ RSpec.describe PhoneNumbersController, type: :controller do
         put :update, {:id => phone_number.to_param, :phone_number => new_attributes}, valid_session
         phone_number.reload
         expect(phone_number.number).to eq("555666777")
-        expect(phone_number.person_id).to eq(bob.id)
+        expect(phone_number.contact_id).to eq(bob.id)
       end
 
       it "assigns the requested phone_number as @phone_number" do
@@ -126,7 +128,7 @@ RSpec.describe PhoneNumbersController, type: :controller do
 
   describe "DELETE #destroy" do
       let(:bob){ Person.create(first_name: "Bob", last_name: "Jones") }
-      let(:valid_attributes){ { number: "555-5555", person_id: bob.id } }
+      let(:valid_attributes){ { number: "555-5555", contact_id: bob.id, contact_type: "Person" } }
 
     it "destroys the requested phone_number" do
       phone_number = PhoneNumber.create! valid_attributes
